@@ -21,11 +21,9 @@ namespace sha {
             int origsize = buf.Length;
             Array.Resize(ref buf, origsize + 1);
             buf[origsize] |= 0x80;
-            Console.WriteLine("{0}", buf.Length);
             int pad = 64;
             int len = ((buf.Length + pad - 1) / pad) * pad;
             Array.Resize(ref buf, len);
-            Console.WriteLine("{0} {1}", origsize, buf.Length);
             long last8bytes = BitConverter.ToInt64(buf, buf.Length - 8);
             if (last8bytes != 0)
                 Array.Resize(ref buf, buf.Length + 64);
@@ -33,7 +31,6 @@ namespace sha {
             Array.Reverse(sizebytes);
             Array.Copy(sizebytes, 0, buf, buf.Length - sizebytes.Length, sizebytes.Length);
             int n = buf.Length / 64;
-            Console.WriteLine(n);
             uint[] w = new uint[80];
             uint[][] M = new uint[n][];
             for (int i = 0; i < M.Length; i++) {
@@ -68,8 +65,7 @@ namespace sha {
                     d = c;
                     c = rot(b, 30);
                     b = a;
-                    a = t;
-                    //Console.WriteLine("{0:D2}: {1:x8} {2:x8} {3:x8} {4:x8} {5:x8}", j, a, b, c, d, e);                   
+                    a = t;              
                 }
                 
                 H[0] = (H[0] + a);
